@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 contract Account {
   struct Post {
@@ -19,7 +20,7 @@ contract Account {
     postCount = 0;
   }
 
-  function post(string memory message) public isOwner() {
+  function createPost(string memory message) public isOwner() {
     require(bytes(message).length <= 160, "Message too long");
     posts[postCount].timestamp = block.timestamp;
     posts[postCount].message = message;
@@ -30,5 +31,15 @@ contract Account {
     require(postId < postCount, "Invalid postId");
     message = posts[postId].message;
     timestamp = posts[postId].timestamp;
+  }
+
+  function getPosts() public view returns (Post[] memory) {
+    Post[] memory _posts = new Post[](postCount);
+    for(uint i = 0; i < postCount; i++) {
+      Post storage post = posts[i];
+      _posts[i] = post;
+    }
+
+    return _posts;
   }
 }
