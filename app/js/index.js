@@ -10,11 +10,10 @@ EmbarkJS.onReady(async (err) => {
 
   // Add a test post for posterity
   const pseudoNow = Number(new Date()) % Math.pow(2, 16);
-  const post = await Account.methods.createPost(`Test Message @ ${pseudoNow.toString()}`).call();
+  const post = await Account.methods.createPost(`Test Message @ ${pseudoNow.toString()}`).send();
   console.log(post);
 
   // You can execute contract calls after the connection
   const postCount = await Account.methods.postCount().call();
-  
   app.innerHTML = postCount;
 });
